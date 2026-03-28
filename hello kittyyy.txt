@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonsuz Sevgi ve Hello Kitty 🎀</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffc0cb; /* Hello Kitty Pembesi */
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Yağmur gibi yağan Hello Kittyler */
+        .hello-kitty {
+            position: absolute;
+            font-size: 45px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(2px 2px 5px rgba(255,105,180,0.5));
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 5px solid #ff69b4;
+            border-radius: 40px;
+            box-shadow: 0 15px 40px rgba(255,20,147,0.3);
+            max-width: 450px;
+            width: 85%;
+            z-index: 100;
+            position: relative;
+            animation: fadeIn 2s ease-in;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ff1493;
+            margin-bottom: 5px;
+        }
+
+        .song-tag {
+            font-size: 0.8rem;
+            color: #ff69b4;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .bow {
+            font-size: 60px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        #infinity-box {
+            height: 100px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+            border-top: 2px dashed #ff69b4;
+            padding-top: 10px;
+        }
+
+        #scrolling-text {
+            font-size: 1.2rem;
+            color: #ff1493;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+        }
+
+        .music-btn {
+            margin-top: 25px;
+            padding: 15px 30px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255,20,147,0.4);
+            transition: all 0.3s;
+        }
+
+        .music-btn:hover {
+            background-color: #ff1493;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
+        @keyframes floatDown {
+            from { transform: translateY(-10vh) rotate(0deg); }
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/t9z5z3.mp3" type="audio/mpeg">
+        Tarayıcın müzik desteklemiyor.
+    </audio>
+
+    <div class="container">
+        <div class="bow">🎀</div>
+        <h1>Canım Arkadaşım!</h1>
+        <div class="song-tag">🎵 Dusya - Eva (Eba) 🎵</div>
+        <p>Seni ne kadar seviyorum biliyor musun?</p>
+        
+        <div id="infinity-box">
+            <div id="scrolling-text"></div>
+        </div>
+
+        <button class="music-btn" onclick="playMusic()">💖 Buraya Tıkla 💖</button>
+    </div>
+
+    <script>
+        // Sonsuz "Çok" Yazısı Oluşturma
+        const textContainer = document.getElementById('scrolling-text');
+        let text = "ÇOK ÇOK ÇOK ÇOK ÇOK ÇOK ÇOK ";
+        for(let i=0; i<10; i++) { text += text; } // Metni devasa hale getir
+        textContainer.innerText = text;
+
+        let currentY = 0;
+        function scrollText() {
+            currentY--;
+            if (Math.abs(currentY) >= textContainer.offsetHeight / 2) {
+                currentY = 0;
+            }
+            textContainer.style.top = currentY + 'px';
+            requestAnimationFrame(scrollText);
+        }
+        scrollText();
+
+        // Hello Kitty Yağmuru
+        const kitties = ["🎀🐱", "🤍🎀", "😻", "🌸", "🎀", "🍭"];
+        function createKitty() {
+            const kitty = document.createElement("div");
+            kitty.className = "hello-kitty";
+            kitty.innerText = kitties[Math.floor(Math.random() * kitties.length)];
+            kitty.style.left = Math.random() * 100 + "vw";
+            kitty.style.top = "-60px";
+            const duration = Math.random() * 5 + 4;
+            kitty.style.animation = `floatDown ${duration}s linear forwards`;
+            document.body.appendChild(kitty);
+            setTimeout(() => { kitty.remove(); }, duration * 1000);
+        }
+        setInterval(createKitty, 400);
+
+        // Müzik ve Başlatma
+        function playMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.querySelector('.music-btn');
+            
+            if (music.paused) {
+                music.play();
+                btn.innerText = "⏸ Müziği Durdur";
+                btn.style.backgroundColor = "#ff1493";
+            } else {
+                music.pause();
+                btn.innerText = "▶ Müziği Devam Et";
+                btn.style.backgroundColor = "#ff69b4";
+            }
+        }
+    </script>
+</body>
+</html>
